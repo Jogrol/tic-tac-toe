@@ -2,11 +2,12 @@ import { createAction } from "@reduxjs/toolkit";
 import { GameStateModel, PlayerEnum } from "./gameReducer";
 
 export enum GameActionEnum {
-  SetBoardSquares = "SET_BOARD_SQUARES",
   SetPlayerEnum = "SET_PLAYER_ENUM",
+  SetBoardSquares = "SET_BOARD_SQUARES",
   IncrementScorePlayerOne = "INCREMENT_SCORE_PLAYER_ONE",
   IncrementScorePlayerTwo = "INCREMENT_SCORE_PLAYER_TWO",
   ResetGame = "RESET_GAME",
+  SetWinningGrid = "SET_WINNING_GRID"
 }
 
 export class gameActions {
@@ -23,6 +24,8 @@ export class gameActions {
   static incrementScorePlayerTwo = createAction(
     GameActionEnum.IncrementScorePlayerTwo
   );
+
+  static setWinningGrid = createAction<(PlayerEnum | number)[][]>(GameActionEnum.SetWinningGrid)
 
   static resetGame = createAction<GameStateModel>(GameActionEnum.ResetGame);
 }

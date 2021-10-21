@@ -12,4 +12,8 @@ export class gameSelectors {
   static selectCurrentScore(state: GameStateModel): GameStateScoreModel {
     return state.score;
   }
+
+  static selectWinningGrid(state: GameStateModel): (PlayerEnum | number)[][] {
+      return state.winningGrid;
+  }
 }

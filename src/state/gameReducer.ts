@@ -15,6 +15,7 @@ export interface GameStateModel {
   boardSquares: (PlayerEnum | number)[];
   currentPlayer: PlayerEnum;
   score: GameStateScoreModel;
+  winningGrid: (PlayerEnum | number)[][];
 }
 
 export const initialState = {
@@ -43,9 +44,14 @@ const gameReducer = createReducer(initialState, (builder) => {
     state.score[PlayerEnum.Player_2]++;
   });
 
+  builder.addCase(gameActions.setWinningGrid, (state, action) => {
+    state.winningGrid = action.payload
+  });
+  
   builder.addCase(gameActions.resetGame, () => {
     return initialState;
   });
+
 });
 
 export default gameReducer;

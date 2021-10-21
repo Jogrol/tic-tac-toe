@@ -1,6 +1,10 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { gameActions } from "../state/gameActions";
-import { GameStateScoreModel, initialState, PlayerEnum } from "../state/gameReducer";
+import {
+  GameStateScoreModel,
+  PlayerEnum,
+} from "../state/gameReducer";
 import { gameSelectors } from "../state/gameSelector";
 
 export interface UseGameModel {
@@ -9,7 +13,10 @@ export interface UseGameModel {
   gameScore: GameStateScoreModel;
   handleGameTurn: Function;
   squareIsClicked: Function;
-  resetGame: Function;
+
+  createGame: Function;
+  gridSize: number;
+  setGridSize: Function;
 }
 
 const useGame = (): UseGameModel => {
@@ -17,6 +24,8 @@ const useGame = (): UseGameModel => {
   const boardSquares = useSelector(gameSelectors.selectBoardSquares);
   const currentPlayer = useSelector(gameSelectors.selectCurrentPlayer);
   const gameScore = useSelector(gameSelectors.selectCurrentScore);
+  const winningGrid = useSelector(gameSelectors.selectWinningGrid);
+  const [gridSize, setGridSize] = useState<number>(3);
 
   const handleGameTurn = (index: number): void => {
     let updatedBoardSquares = [...boardSquares];
@@ -52,18 +61,7 @@ const useGame = (): UseGameModel => {
   };
 
   const checkForWin = (squares: (PlayerEnum | number)[]): boolean => {
-    const winningOutcomes = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ] as (PlayerEnum | number)[][];
-
-    const updatedWinningOutcomes = winningOutcomes.map((item) => {
+    const updatedWinningOutcomes = winningGrid.map((item) => {
       const updatedItem = item.map((i) => squares[Number(i)]);
       return updatedItem;
     });
@@ -90,20 +88,79 @@ const useGame = (): UseGameModel => {
   };
 
   const newGame = () => {
-    dispatch(gameActions.setBoardSquares(Array.from(Array(9).keys())));
+    const totalSquares: number = gridSize * gridSize;
+    dispatch(
+      gameActions.setBoardSquares(Array.from(Array(totalSquares).keys()))
+    );
   };
 
-  const resetGame = () => {
-    dispatch(gameActions.resetGame(initialState))
-  }
+  const createGame = (grid: number) => {
+    const totalSquares: number = grid * grid;
+
+    const winningGrid: number[][] = createWinningGrid(
+      grid,
+      Array.from(Array(totalSquares).keys())
+    );
+    dispatch(
+      gameActions.setBoardSquares(Array.from(Array(totalSquares).keys()))
+    );
+    setGridSize(grid);
+
+    dispatch(gameActions.setWinningGrid(winningGrid));
+  };
+
+  const createWinningGrid = (
+    grid: number,
+    boardGameSquares: number[]
+  ): number[][] => {
+    const horizontalSquares: number[][] = boardGameSquares
+      .map(() => {
+        const result = boardGameSquares.splice(0, grid);
+        return result;
+      })
+      .filter((i) => i);
+
+    let verticalSquares: number | number[][] = [];
+
+    for (let i = 0; i < horizontalSquares.length; i++) {
+      let array = [horizontalSquares.map((item) => item[i])];
+      verticalSquares = [...verticalSquares, ...array];
+    }
+
+    let diagonalSquaresLeftToRright: number | number[] = [];
+
+    for (let i = 0; i < horizontalSquares.length; i++) {
+      let array = [horizontalSquares[i][i]];
+      diagonalSquaresLeftToRright = [...diagonalSquaresLeftToRright, ...array];
+    }
+
+    let diagonalSquaresRightToLeft: number | number[] = [];
+
+    for (let i = 0; i < horizontalSquares.length; i++) {
+      const reversedHorizontalSquares = [...horizontalSquares[i]].reverse();
+      let array = [reversedHorizontalSquares[i]];
+      diagonalSquaresRightToLeft = [...diagonalSquaresRightToLeft, ...array];
+    }
+
+    const winningGrid: number[][] = [
+      ...horizontalSquares,
+      ...verticalSquares,
+      [...diagonalSquaresLeftToRright],
+      [...diagonalSquaresRightToLeft],
+    ];
+
+    return winningGrid;
+  };
 
   return {
     boardSquares,
     currentPlayer,
     gameScore,
+    gridSize,
     handleGameTurn,
     squareIsClicked,
-    resetGame
+    createGame,
+    setGridSize,
   };
 };
 

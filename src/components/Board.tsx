@@ -5,11 +5,29 @@ interface BoardPropsModel {
   squares: (PlayerEnum | number)[];
   handleGameTurn: Function;
   isClicked: Function;
+  gridSize: number;
 }
 
-const Board = ({ squares, handleGameTurn, isClicked }: BoardPropsModel) => {
+const Board = ({
+  squares,
+  handleGameTurn,
+  isClicked,
+  gridSize = 3,
+}: BoardPropsModel) => {
+  const getGridSize = (gridSize: number) => {
+    if (gridSize === 3) {
+      return "grid-cols-3";
+    }
+    if (gridSize === 4) {
+      return "grid-cols-4";
+    }
+    if (gridSize === 5) {
+      return "grid-cols-5";
+    }
+  };
+
   return (
-    <div className='grid gap-4 grid-cols-3 p-4 '>
+    <div className={`grid gap-4 p-4 ${getGridSize(gridSize)}`}>
       {squares.map((i, index) => {
         return (
           <button
