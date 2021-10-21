@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { gameActions } from "../state/gameActions";
-import { GameStateScoreModel, PlayerEnum } from "../state/gameReducer";
+import { GameStateScoreModel, initialState, PlayerEnum } from "../state/gameReducer";
 import { gameSelectors } from "../state/gameSelector";
 
 export interface UseGameModel {
@@ -9,6 +9,7 @@ export interface UseGameModel {
   gameScore: GameStateScoreModel;
   handleGameTurn: Function;
   squareIsClicked: Function;
+  resetGame: Function;
 }
 
 const useGame = (): UseGameModel => {
@@ -25,11 +26,14 @@ const useGame = (): UseGameModel => {
       dispatch(gameActions.setBoardSquares(updatedBoardSquares));
       alert(`Well Done, Player ${currentPlayer}!`);
       updateScore();
+      newGame();
     } else if (checkForDraw(updatedBoardSquares)) {
       alert("Its a draw. try again!");
+      newGame();
+    } else {
+      dispatch(gameActions.setBoardSquares(updatedBoardSquares));
     }
 
-    dispatch(gameActions.setBoardSquares(updatedBoardSquares));
     togglePlayer();
   };
 
@@ -85,12 +89,21 @@ const useGame = (): UseGameModel => {
     );
   };
 
+  const newGame = () => {
+    dispatch(gameActions.setBoardSquares(Array.from(Array(9).keys())));
+  };
+
+  const resetGame = () => {
+    dispatch(gameActions.resetGame(initialState))
+  }
+
   return {
     boardSquares,
     currentPlayer,
     gameScore,
     handleGameTurn,
     squareIsClicked,
+    resetGame
   };
 };
 

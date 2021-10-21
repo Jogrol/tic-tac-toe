@@ -16,7 +16,7 @@ const Board = ({ squares, handleGameTurn, isClicked }: BoardPropsModel) => {
             onClick={() => handleGameTurn(i)}
             key={index}
             disabled={isClicked(i)}
-            className={`flex items-center justify-center rounded-lg border-2 shadow-md py-6 ${
+            className={`flex items-center bg-gray-200 justify-center rounded-lg border-2 shadow-md py-6 ${
               isClicked(i)
                 ? `cursor-default`
                 : "cursor-pointer hover:animate-pulse"

@@ -8,10 +8,10 @@ export interface GameStatusPropsModel {
 
 const GameStatus = ({ currentPlayer, score }: GameStatusPropsModel) => {
   return (
-    <div className='grid grid-cols-2'>
+    <div className='grid grid-cols-2 gap-4 w-full p-4'>
       <div
         className={`p-4 flex justify-center rounded-md ${
-          currentPlayer === PlayerEnum.Player_1 ? "bg-red-500" : "bg-yellow-100"
+          currentPlayer === PlayerEnum.Player_1 ? "bg-red-500" : "bg-gray-300"
         }`}>
         <div className='flex flex-col items-center justify-center'>
           <p className='uppercase text-black'>Player {PlayerEnum.Player_1}</p>
@@ -20,7 +20,7 @@ const GameStatus = ({ currentPlayer, score }: GameStatusPropsModel) => {
       </div>
       <div
         className={`p-4 flex justify-center rounded-md ${
-          currentPlayer === PlayerEnum.Player_2 ? "bg-red-500" : "bg-yellow-100"
+          currentPlayer === PlayerEnum.Player_2 ? "bg-red-500" : "bg-gray-300"
         }`}>
         <div className='flex flex-col items-center justify-center'>
           <p className='uppercase'>Player {PlayerEnum.Player_2}</p>

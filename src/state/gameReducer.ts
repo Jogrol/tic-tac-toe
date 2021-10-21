@@ -17,7 +17,7 @@ export interface GameStateModel {
   score: GameStateScoreModel;
 }
 
-const initialState = {
+export const initialState = {
   boardSquares: Array.from(Array(9).keys()),
   currentPlayer: PlayerEnum.Player_1,
   score: {
@@ -35,12 +35,16 @@ const gameReducer = createReducer(initialState, (builder) => {
     state.currentPlayer = action.payload;
   });
 
-  builder.addCase(gameActions.incrementScorePlayerOne, (state, action) => {
-    state.score[PlayerEnum.Player_1]++
+  builder.addCase(gameActions.incrementScorePlayerOne, (state) => {
+    state.score[PlayerEnum.Player_1]++;
   });
 
-  builder.addCase(gameActions.incrementScorePlayerTwo, (state, action) => {
-    state.score[PlayerEnum.Player_2]++
+  builder.addCase(gameActions.incrementScorePlayerTwo, (state) => {
+    state.score[PlayerEnum.Player_2]++;
+  });
+
+  builder.addCase(gameActions.resetGame, () => {
+    return initialState;
   });
 });
 
