@@ -18,15 +18,41 @@ const useGame = (): UseGameModel => {
   const handleGameTurn = (index: number): void => {
     let updatedBoardSquares = [...boardSquares];
     updatedBoardSquares[index] = currentPlayer;
-
-
     togglePlayer();
+    if (checkForWin(updatedBoardSquares)) {
+      console.log('winning !', currentPlayer);
+    }
+
     dispatch(gameActions.setBoardSquares(updatedBoardSquares));
+  };
+
+  const checkForWin = (squares: (PlayerEnum | number)[]): boolean => {
+    const winningOutcomes = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ] as (PlayerEnum | number)[][];
+
+    const updatedWinningOutcomes = winningOutcomes.map((item) => {
+      const updatedItem = item.map((i) => squares[Number(i)]);
+      return updatedItem;
+    });
+
+    const isWinning = updatedWinningOutcomes.some((item) => {
+      return item.every((winningOutcome) => winningOutcome === currentPlayer);
+    });
+
+    return isWinning;
   };
 
   const squareIsClicked = (square: number | PlayerEnum): boolean => {
     return square === PlayerEnum.Player_1 || square === PlayerEnum.Player_2;
-  }
+  };
 
   const togglePlayer = (): void => {
     dispatch(
@@ -42,7 +68,7 @@ const useGame = (): UseGameModel => {
     boardSquares,
     currentPlayer,
     handleGameTurn,
-    squareIsClicked
+    squareIsClicked,
   };
 };
 
