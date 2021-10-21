@@ -4,6 +4,8 @@ import { PlayerEnum } from "./gameReducer";
 export enum GameActionEnum {
   SetBoardSquares = "SET_BOARD_SQUARES",
   SetPlayerEnum = 'SET_PLAYER_ENUM',
+  IncrementScorePlayerOne = "INCREMENT_SCORE_PLAYER_ONE",
+  IncrementScorePlayerTwo = "INCREMENT_SCORE_PLAYER_TWO",
 }
 
 export class gameActions {
@@ -12,6 +14,12 @@ export class gameActions {
   )
   static setPlayer = createAction<PlayerEnum>(
     GameActionEnum.SetPlayerEnum
+  )
+  static incrementScorePlayerOne = createAction(
+    GameActionEnum.IncrementScorePlayerOne
+  )
+  static incrementScorePlayerTwo = createAction(
+    GameActionEnum.IncrementScorePlayerTwo
   )
 }
 

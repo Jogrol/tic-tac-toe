@@ -1,29 +1,50 @@
 import { useDispatch, useSelector } from "react-redux";
 import { gameActions } from "../state/gameActions";
-import { PlayerEnum } from "../state/gameReducer";
+import { GameStateScoreModel, PlayerEnum } from "../state/gameReducer";
 import { gameSelectors } from "../state/gameSelector";
 
 export interface UseGameModel {
-  boardSquares: any[];
+  boardSquares: (number | PlayerEnum)[];
   currentPlayer: PlayerEnum;
+  gameScore: GameStateScoreModel;
   handleGameTurn: Function;
   squareIsClicked: Function;
 }
 
 const useGame = (): UseGameModel => {
   const dispatch = useDispatch();
-  const boardSquares = useSelector(gameSelectors.SelectBoardSquares);
-  const currentPlayer = useSelector(gameSelectors.SelectCurrentPlayer);
+  const boardSquares = useSelector(gameSelectors.selectBoardSquares);
+  const currentPlayer = useSelector(gameSelectors.selectCurrentPlayer);
+  const gameScore = useSelector(gameSelectors.selectCurrentScore);
 
   const handleGameTurn = (index: number): void => {
     let updatedBoardSquares = [...boardSquares];
     updatedBoardSquares[index] = currentPlayer;
-    togglePlayer();
+
     if (checkForWin(updatedBoardSquares)) {
-      console.log('winning !', currentPlayer);
+      dispatch(gameActions.setBoardSquares(updatedBoardSquares));
+      alert(`Well Done, Player ${currentPlayer}!`);
+      updateScore();
+    } else if (checkForDraw(updatedBoardSquares)) {
+      alert("Its a draw. try again!");
     }
 
     dispatch(gameActions.setBoardSquares(updatedBoardSquares));
+    togglePlayer();
+  };
+
+  const updateScore = (): void => {
+    if (currentPlayer === PlayerEnum.Player_1) {
+      dispatch(gameActions.incrementScorePlayerOne());
+    } else {
+      dispatch(gameActions.incrementScorePlayerTwo());
+    }
+  };
+
+  const checkForDraw = (squares: (PlayerEnum | number)[]): boolean => {
+    return squares.every((i) => {
+      return i === PlayerEnum.Player_1 || i === PlayerEnum.Player_2;
+    });
   };
 
   const checkForWin = (squares: (PlayerEnum | number)[]): boolean => {
@@ -67,6 +88,7 @@ const useGame = (): UseGameModel => {
   return {
     boardSquares,
     currentPlayer,
+    gameScore,
     handleGameTurn,
     squareIsClicked,
   };

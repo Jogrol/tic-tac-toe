@@ -1,24 +1,31 @@
 import React from "react";
-import { PlayerEnum } from "../state/gameReducer";
+import { GameStateScoreModel, PlayerEnum } from "../state/gameReducer";
 
 export interface GameStatusPropsModel {
   currentPlayer: PlayerEnum;
+  score: GameStateScoreModel;
 }
 
-const GameStatus = ({ currentPlayer }: GameStatusPropsModel) => {
+const GameStatus = ({ currentPlayer, score }: GameStatusPropsModel) => {
   return (
     <div className='grid grid-cols-2'>
       <div
         className={`p-4 flex justify-center rounded-md ${
           currentPlayer === PlayerEnum.Player_1 ? "bg-red-500" : "bg-yellow-100"
         }`}>
-        <p>Player {PlayerEnum.Player_1}</p>
+        <div className='flex flex-col items-center justify-center'>
+          <p className='uppercase text-black'>Player {PlayerEnum.Player_1}</p>
+          <p className='text-4xl'>{score[PlayerEnum.Player_1]}</p>
+        </div>
       </div>
       <div
         className={`p-4 flex justify-center rounded-md ${
           currentPlayer === PlayerEnum.Player_2 ? "bg-red-500" : "bg-yellow-100"
         }`}>
-        <p>Player {PlayerEnum.Player_2}</p>
+        <div className='flex flex-col items-center justify-center'>
+          <p className='uppercase'>Player {PlayerEnum.Player_2}</p>
+          <p className='text-4xl'>{score[PlayerEnum.Player_2]}</p>
+        </div>
       </div>
     </div>
   );

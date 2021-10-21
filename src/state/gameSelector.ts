@@ -1,10 +1,15 @@
-import { GameStateModel, PlayerEnum } from "./gameReducer";
+import { GameStateModel, GameStateScoreModel, PlayerEnum } from "./gameReducer";
 
 export class gameSelectors {
-    static SelectBoardSquares(state: GameStateModel): (PlayerEnum | number)[] {
-        return state.boardSquares;
-    }
-    static SelectCurrentPlayer(state: GameStateModel): PlayerEnum {
-        return state.currentPlayer
-    }
+  static selectBoardSquares(state: GameStateModel): (PlayerEnum | number)[] {
+    return state.boardSquares;
+  }
+
+  static selectCurrentPlayer(state: GameStateModel): PlayerEnum {
+    return state.currentPlayer;
+  }
+
+  static selectCurrentScore(state: GameStateModel): GameStateScoreModel {
+    return state.score;
+  }
 }
