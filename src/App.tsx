@@ -4,7 +4,7 @@ import GameStatus from "./components/GameSatus";
 import useGame, { UseGameModel } from "./hooks/useGame";
 
 function App() {
-  const { boardSquares, currentPlayer , handleGameTurn}: UseGameModel = useGame();
+  const { boardSquares, currentPlayer , handleGameTurn, squareIsClicked } : UseGameModel = useGame();
 
   return (
     <div className='container mx-auto w-full'>
@@ -12,7 +12,7 @@ function App() {
         <h1 className='text-4xl font-bold'>Tic Tac Toe</h1>
       </header>
       <main>
-        <Board squares={boardSquares} handleGameTurn={handleGameTurn}/>
+        <Board squares={boardSquares} handleGameTurn={handleGameTurn} isClicked={squareIsClicked}/>
         <GameStatus currentPlayer={currentPlayer}/>
       </main>
     </div>

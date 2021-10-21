@@ -7,6 +7,7 @@ export interface UseGameModel {
   boardSquares: any[];
   currentPlayer: PlayerEnum;
   handleGameTurn: Function;
+  squareIsClicked: Function;
 }
 
 const useGame = (): UseGameModel => {
@@ -18,9 +19,14 @@ const useGame = (): UseGameModel => {
     let updatedBoardSquares = [...boardSquares];
     updatedBoardSquares[index] = currentPlayer;
 
+
     togglePlayer();
     dispatch(gameActions.setBoardSquares(updatedBoardSquares));
   };
+
+  const squareIsClicked = (square: number | PlayerEnum): boolean => {
+    return square === PlayerEnum.Player_1 || square === PlayerEnum.Player_2;
+  }
 
   const togglePlayer = (): void => {
     dispatch(
@@ -36,6 +42,7 @@ const useGame = (): UseGameModel => {
     boardSquares,
     currentPlayer,
     handleGameTurn,
+    squareIsClicked
   };
 };
 

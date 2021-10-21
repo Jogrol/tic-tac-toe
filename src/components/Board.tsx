@@ -4,13 +4,10 @@ import { PlayerEnum } from "../state/gameReducer";
 interface BoardPropsModel {
   squares: (PlayerEnum | number)[];
   handleGameTurn: Function;
+  isClicked: Function;
 }
 
-const Board = ({ squares, handleGameTurn }: BoardPropsModel) => {
-  const isClicked = (square: PlayerEnum | number) => {
-    return square === PlayerEnum.Player_1 || square === PlayerEnum.Player_2;
-  };
-
+const Board = ({ squares, handleGameTurn, isClicked }: BoardPropsModel) => {
   return (
     <div className='grid gap-4 grid-cols-3 p-4 '>
       {squares.map((i, index) => {
@@ -18,7 +15,8 @@ const Board = ({ squares, handleGameTurn }: BoardPropsModel) => {
           <button
             onClick={() => handleGameTurn(i)}
             key={index}
-            className={`flex items-center justify-center rounded-lg border-2 py-6 ${
+            disabled={isClicked(i)}
+            className={`flex items-center justify-center rounded-lg border-2 shadow-md py-6 ${
               isClicked(i)
                 ? `cursor-default`
                 : "cursor-pointer hover:animate-pulse"
