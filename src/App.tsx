@@ -1,9 +1,10 @@
 import React from "react";
 import Board from "./components/Board";
+import GameStatus from "./components/GameSatus";
 import useGame, { UseGameModel } from "./hooks/useGame";
 
 function App() {
-  const { boardSquares }: UseGameModel = useGame();
+  const { boardSquares, currentPlayer }: UseGameModel = useGame();
 
   return (
     <div className='container mx-auto w-full'>
@@ -12,6 +13,7 @@ function App() {
       </header>
       <main>
         <Board squares={boardSquares}/>
+        <GameStatus currentPlayer={currentPlayer}/>
       </main>
     </div>
   );

@@ -1,7 +1,9 @@
 import React from "react";
+import { PlayerEnum } from "../state/gameReducer";
 
 interface BoardPropsModel {
-  squares: number[];
+  squares: (PlayerEnum | number)[];
+
 }
 
 const Board = ({ squares }: BoardPropsModel) => {
